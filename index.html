@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+  <input type="text"onkeyup="filterdata()" id="inputvalue"style="margin:5px"><br>
+      
+  <button style="margin:5px" onclick="lowtohigh()">Price low-high</button>
+  <button style="margin:5px" onclick="hightolow()">Price high-low</button>
+  <div class="col-4">
+    <div id="carts" class="card" style="width: 18rem;">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="id">Id</h5>
+        <h5 class="title"> Title</h5>
+        <h5 class="price">Price</h5>
+        <p class="description">Description</p>
+        <a href="#" class="btn btn-primary">add to Cart</a>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const fetchProduct = () => {
+      fetch("https://api.escuelajs.co/api/v1/products")
+        .then(y => y.json())
+        .then(y => {
+
+
+          display(y);
+        })
+
+    }
+    fetchProduct();
+
+    const display = (data) => {
+
+      const dis = data.map((y, index) => {
+
+        return (`<div class="col-4"><div class="card" style="width: 18rem;">
+        <img src="${y.images}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="id">${y.id}</h5>  
+          <h5 class="title">${y.title}</h5>
+          <h5 class="price">${y.price}</h5>
+          <p class="description">${y.description}</p>
+          <a href="#" class="btn btn-primary">add to Cart</a>
+          
+        </div>
+      </div>
+</div>
+`)
+      })
+
+
+      document.getElementById("carts").innerHTML = dis.join(" ");
+
+
+    }
+
+    filterdata=(data)=>{
+
+const searchdata = document.getElementById("inputvalue").value;
+
+const Searchdata = data.filter((v)=>{
+
+    return v.title.includes(searchdata);
+})
+
+display(Searchdata)
+
+};
+
+
+    lowtohigh = (data) => {
+
+      let lowPrice = data.sort((a, b) => {
+
+        if (a.price > b.price) {
+          return 1
+        }
+        else {
+
+          return -1
+        }
+
+      })
+
+      displaydata(lowPrice);
+    };
+    
+
+    hightolow = (data) => {
+
+      let highPrice = data.sort((a, b) => {
+
+        if (a.price < b.price) {
+          return 1
+        }
+        else {
+
+          return -1
+        }
+
+      })
+      displaydata(highPrice);
+    };
+
+
+
+
+  </script>
+
+</body>
+
+</html>
